@@ -1,0 +1,84 @@
+﻿<Window x:Class="repairServiceCW.Views.ElementsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:repairServiceCW.Views"
+        mc:Ignorable="d"
+        Title="Список элементов" Height="900" Width="1200">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="MinHeight" Value="40"/>
+            <Setter Property="MinWidth" Value="250"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="30,30,30,18">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel VerticalAlignment="Top">
+                <TextBlock Text="Заказ {order_name}, {order_device}, {order_model}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                <DockPanel Margin="5" VerticalAlignment="Top">
+                    <TextBlock Text="Дата получения: {order_date}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="Статус: {order_status}" HorizontalAlignment="Right"/>
+                </DockPanel>
+                <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" Text="Описание проблемы: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. N" Margin="5"/>
+                <TextBlock Text="Свернуть..." Margin="5,0,5,0"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                    <TextBlock Text="Элементы заказа" Margin="5" VerticalAlignment="Center" FontSize="24"/>
+                    <Button Content="+" Margin="5" MinHeight="28" MinWidth="28" FontSize="18"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ListBox>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <!-- Лево: N. element_name -->
+                            <TextBlock Text="{Binding ElementName}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"/>
+
+                            <!-- Середина: element_date и element_price -->
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding ElementDate}" Margin="10"/>
+                                <TextBlock Text="{Binding ElementPrice}" Margin="10"/>
+                            </StackPanel>
+
+                            <!-- Правая часть: element_type -->
+                            <TextBlock Text="{Binding ElementType}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10"/>
+                            
+                            <!-- Кнопки -->
+                            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">
+                                <Button Content="Изменить"/>
+                                <!--  Click="EditButton_Click" -->
+                                <Button Content="Удалить" />
+                                <!-- Click="DeleteButton_Click" -->
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <DockPanel VerticalAlignment="Bottom"  Margin="100,0,100,0">
+                <Button Content="Сгенерировать акт работ" Margin="10" HorizontalAlignment="Left"/>
+                <Button Content="Вернуться к списку заказов" Margin="10" HorizontalAlignment="Right"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+    
+</Window>

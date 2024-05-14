@@ -1,0 +1,91 @@
+﻿<Window x:Class="repairServiceCW.Views.ElementAddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:repairServiceCW.Views"
+        mc:Ignorable="d"
+        Title="Добавления элемента" Height="600" Width="900">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="300"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="300"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <TextBlock Text="Данные нового элемента" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid Margin="100,5,100,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Text="Название элемента" Margin="5"/>
+                        <TextBox Margin="5"/>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Text="Заявленная стоимость элемента(руб.)" Margin="5"/>
+                        <!-- Написать валидатор чисел -->
+                        <TextBox Margin="5"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Text="Тип элемента" Margin="5"/>
+                        <!-- Поменять на ListBox с выбором из всех статусов -->
+                        <TextBox Margin="5"/>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Text="Дата выполнения/использования" Margin="5"/>
+                        <DatePicker Margin="5" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <StackPanel Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Количество (число материалов и компонентов)" Margin="5,0,5,0"/>
+                        <!-- Написать валидатор и логику блока ввода -->
+                        <TextBox Margin="5"/>
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+                <Button Content="Добавить" Margin="5,0,20,0" MinHeight="24" MinWidth="200" FontSize="18"/>
+                <Button Content="Отмена" Margin="5,0,20,0"  MinHeight="24" MinWidth="200" FontSize="18"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

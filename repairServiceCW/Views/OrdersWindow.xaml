@@ -1,0 +1,64 @@
+﻿<Window x:Class="repairServiceCW.Views.OrdersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:RepairServiceVM}"
+        mc:Ignorable="d"
+        Title="Список заказов" Height="900" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="14*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                        <TextBlock Text="Заказы" Margin="5" VerticalAlignment="Center" FontSize="24"/>
+                        <Button Content="+" Margin="5" MinHeight="28" MinWidth="28" FontSize="18"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ListBox Margin="10">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <!-- Лево: order_name -->
+                            <TextBlock Text="{Binding OrderName}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"/>
+
+                            <!-- Середина: order_date и order_device order_model -->
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding OrderDate}" Margin="10"/>
+                                <TextBlock Text="{Binding OrderDevice}" Margin="10"/>
+                                <TextBlock Text="{Binding OrderModel}" Margin="10"/>
+                            </StackPanel>
+
+                            <!-- Правая часть: order_status -->
+                            <TextBlock Text="{Binding OrderStatus}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10"/>
+
+                            <!-- Кнопки -->
+                            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">
+                                <Button Content="Просмотр"/>
+                                <!--Click="ViewButton_Click"-->
+                                <Button Content="Изменить" />
+                                <!--Click="EditButton_Click"-->
+                                <Button Content="Удалить" />
+                                <!--Click="DeleteButton_Click"-->
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</Window>

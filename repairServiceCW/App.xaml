@@ -1,0 +1,9 @@
+﻿<Application x:Class="repairServiceCW.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:repairServiceCW"
+             StartupUri="Views/OrdersWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>

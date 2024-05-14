@@ -24,7 +24,60 @@ namespace repairServiceCW.Models
             return output;
         }
 
-        // Add, redact, delete
+        public void DeleteOrderRecord(Order o)
+        {
+            using (repair_serviceContext db = new())
+            {
+                // Удалить все элементы заказа
+                foreach (OrderElement oe in o.OrderElements)
+                {
+                    DeleteElementRecord(oe);
+                }
+
+                //Удалить заказ
+                db.Remove(o);
+                db.SaveChanges();
+            }
+        }
+
+        public void AddOrderRecord(Order o)
+        {
+            using (repair_serviceContext db = new())
+            { 
+                Order newOrder = new Order
+                { 
+                    OrderCode = o.OrderCode,
+                    OrderTakeDate = o.OrderTakeDate,
+                    OrderDescription = o.OrderDescription,
+                    OrderDevice = o.OrderDevice,
+                    OrderDeviceModel = o.OrderDeviceModel,
+                    CodeStatus = o.CodeStatus
+                };
+                
+                db.Add(newOrder);
+                db.SaveChanges();
+            }
+        }
+
+        public void RedactOrderRecord(Order o)
+        {
+            using (repair_serviceContext db = new())
+            {
+                var existingOrder = db.Orders.FirstOrDefault(x => x.OrderId == o.OrderId);
+
+                if (existingOrder != null)
+                {
+                    existingOrder.OrderCode = o.OrderCode;
+                    existingOrder.OrderTakeDate = o.OrderTakeDate;
+                    existingOrder.OrderDescription = o.OrderDescription;
+                    existingOrder.OrderDevice = o.OrderDevice;
+                    existingOrder.OrderDeviceModel = o.OrderDeviceModel;
+                    existingOrder.CodeStatus = o.CodeStatus;
+
+                    db.SaveChanges();
+                }
+            }
+        }
 
         #endregion
 
@@ -48,7 +101,52 @@ namespace repairServiceCW.Models
             return output;
         }
 
-        // Add, redact, delete
+        public void DeleteElementRecord(OrderElement e)
+        {
+            using (repair_serviceContext db = new())
+            {
+                db.Remove(e);
+                db.SaveChanges();
+            }
+        }
+
+        public void AddElementRecord(OrderElement oe, Order o)
+        {
+            using (repair_serviceContext db = new())
+            {
+                OrderElement newElement = new OrderElement
+                {
+                    ElementName = oe.ElementName,
+                    ElementPrice = oe.ElementPrice,
+                    IdOrder = o.OrderId,
+                    ElementEndDate = oe.ElementEndDate,
+                    ElementQuantity = oe.ElementQuantity,
+                    CodeElement = oe.CodeElement
+                };
+
+                db.Add(newElement);
+                db.SaveChanges();
+            }
+        }
+
+        public void RedactElementRecord(OrderElement oe)
+        {
+            using (repair_serviceContext db = new())
+            {
+                var existingElement = db.OrderElements.FirstOrDefault(x => x.ElementId == oe.ElementId);
+
+                if (existingElement != null)
+                {
+                    existingElement.ElementName = oe.ElementName;
+                    existingElement.ElementPrice = oe.ElementPrice;
+                    existingElement.ElementEndDate = oe.ElementEndDate;
+                    existingElement.ElementQuantity = oe.ElementQuantity;
+                    existingElement.CodeElement = oe.CodeElement;
+
+                    db.SaveChanges();
+                }
+            }
+        }
 
         #endregion
     }

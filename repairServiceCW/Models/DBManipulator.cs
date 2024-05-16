@@ -10,12 +10,12 @@ namespace repairServiceCW.Models
     public class DBManipulator
     {
         #region Orders
-        public List<Order> GetOrderList()
+        public List<Order> GetOrdersList()
         {
             List<Order> output = new();
             using (repair_serviceContext db = new())
             {
-                var orders = db.Orders.Include(o => o.OrderElements);
+                var orders = db.Orders.Include(o => o.OrderElements).Include(o => o.CodeStatusNavigation);
                 foreach (Order o in orders)
                 {
                     output.Add(o);
@@ -82,7 +82,7 @@ namespace repairServiceCW.Models
         #endregion
 
         #region OrderElements
-        public List<OrderElement> GetElementList(Order o)
+        public List<OrderElement> GetElementsList(Order o)
         {
             List<OrderElement> output = new();
 
@@ -146,6 +146,38 @@ namespace repairServiceCW.Models
                     db.SaveChanges();
                 }
             }
+        }
+
+        #endregion
+
+        #region Dictionaries
+
+        public List<OrderStatus> GetStatusList()
+        {
+            List<OrderStatus> output = new();
+            using (repair_serviceContext db = new())
+            {
+                var statuses = db.OrderStatuses;
+                foreach (OrderStatus os in statuses)
+                {
+                    output.Add(os);
+                }
+            }
+            return output;
+        }
+
+        public List<ElementType> GetElementTypeList()
+        {
+            List<ElementType> output = new();
+            using (repair_serviceContext db = new())
+            {
+                var types = db.ElementTypes;
+                foreach (ElementType et in types)
+                {
+                    output.Add(et);
+                }
+            }
+            return output;
         }
 
         #endregion

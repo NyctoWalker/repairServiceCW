@@ -6,10 +6,25 @@
         xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:RepairServiceVM}"
         mc:Ignorable="d"
         Title="Список заказов" Height="900" Width="1200">
+
+    <Window.Resources>
+        <local:NullToModelConverter x:Key="NullToModelConverter" />
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="30"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="14*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -22,39 +37,62 @@
                 <Grid Grid.Column="1">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
                         <TextBlock Text="Заказы" Margin="5" VerticalAlignment="Center" FontSize="24"/>
-                        <Button Content="+" Margin="5" MinHeight="28" MinWidth="28" FontSize="18"/>
+                        <Button Content="+" MinHeight="28" MinWidth="28" Command="{Binding AddOrderWindowCommand}"/>
                     </StackPanel>
                 </Grid>
             </Grid>
         </Grid>
 
         <Grid Grid.Row="1">
-            <ListBox Margin="10">
+            <ListBox Margin="10" ItemsSource="{Binding OrdersList}" SelectedItem="{Binding SelectedOrder}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="2"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
                             <!-- Лево: order_name -->
-                            <TextBlock Text="{Binding OrderName}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"/>
+                            <Grid Grid.Column="0">
+                                <TextBlock Text="{Binding OrderCode}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" FontSize="24"/>
+                            </Grid>
 
                             <!-- Середина: order_date и order_device order_model -->
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding OrderDate}" Margin="10"/>
-                                <TextBlock Text="{Binding OrderDevice}" Margin="10"/>
-                                <TextBlock Text="{Binding OrderModel}" Margin="10"/>
-                            </StackPanel>
+                            <Grid Grid.Column="1">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding OrderTakeDate, StringFormat='Дата добавления: {0: dd.MM.yyyy}'}" Margin="10" FontSize="18"/>
+                                    <TextBlock Text="{Binding OrderDevice}" Margin="10" FontSize="18"/>
+                                    <TextBlock Text="{Binding OrderDeviceModel, Converter={StaticResource NullToModelConverter}}" Margin="10" FontSize="18"/>
+                                </StackPanel>
+                            </Grid>
 
                             <!-- Правая часть: order_status -->
-                            <TextBlock Text="{Binding OrderStatus}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10"/>
+                            <Grid Grid.Column="2">
+                                <TextBlock Text="{Binding CodeStatusNavigation.StatusName}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10" FontSize="24"/>
+                            </Grid>
 
                             <!-- Кнопки -->
-                            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">
-                                <Button Content="Просмотр"/>
-                                <!--Click="ViewButton_Click"-->
-                                <Button Content="Изменить" />
-                                <!--Click="EditButton_Click"-->
-                                <Button Content="Удалить" />
-                                <!--Click="DeleteButton_Click"-->
-                            </StackPanel>
+                            <Grid Grid.Column="3">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">
+                                    <Button Content="Просмотр"/>
+                                    <!--Click="ViewButton_Click"-->
+                                    <Button Content="Изменить" />
+                                    <!--Click="EditButton_Click"-->
+                                    <Button Content="Удалить" />
+                                    <!--Click="DeleteButton_Click"-->
+                                </StackPanel>
+                            </Grid>
+
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

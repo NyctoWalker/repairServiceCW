@@ -1,4 +1,5 @@
-﻿using System;
+﻿using repairServiceCW.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace repairServiceCW.Views
 {
-    /// <summary>
-    /// Логика взаимодействия для OrderAddWindow.xaml
-    /// </summary>
     public partial class OrderAddWindow : Window
     {
-        public OrderAddWindow()
+        public OrderAddWindow(RepairServiceVM vm)
         {
             InitializeComponent();
+            AddOrderVM VM = new AddOrderVM(vm);
+            DataContext = VM;
+            VM.RequestClose += () => this.Close();
         }
     }
 }

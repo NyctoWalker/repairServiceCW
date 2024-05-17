@@ -3,10 +3,65 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:repairServiceCW.Views"
+        xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:RedactOrderVM}"
         mc:Ignorable="d"
-        Title="OrderDeleteWindow" Height="450" Width="800">
+        Title="Удаление заказа" Height="250" Width="600"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <local:NullToModelConverter x:Key="NullToModelConverter" />
+    </Window.Resources>
+    
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Image Source="/Resources/exclamation.png"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <StackPanel>
+                        <TextBlock FontSize="18" TextWrapping="Wrap" Text="Вы действительно хотите удалить заказ?"/>
+                        <TextBlock Text=""/>
+
+                        <TextBlock FontSize="18" TextWrapping="Wrap">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="Заказ {0} от {1}, {2}, {3}.">
+                                    <Binding Path="Order.OrderCode" />
+                                    <Binding Path="FormatDate" />
+                                    <Binding Path="Order.OrderDevice" />
+                                    <Binding Path="Order.OrderDeviceModel">
+                                        <Binding.Converter>
+                                            <local:NullToModelConverter/>
+                                        </Binding.Converter>
+                                    </Binding>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+
+                        <TextBlock FontSize="18" TextWrapping="Wrap" Text="Будет удалён заказ и все его элементы (работы, материалы, компоненты)."/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+                <Button Content="Удалить" Margin="5,0,20,0" MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding DeleteOrderCommand}" CommandParameter="{Binding Order}"/>
+                <Button Content="Отмена" Margin="5,0,20,0"  MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Window>

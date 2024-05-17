@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:repairServiceCW.Views"
         mc:Ignorable="d"
-        Title="Изменение элемента" Height="600" Width="900">
+        Title="Изменение элемента" Height="600" Width="900"
+        ResizeMode="NoResize">
+    
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:AddOrderVM}"
         mc:Ignorable="d"
-        Title="Добавление заказа" Height="600" Width="900">
+        Title="Добавление заказа" Height="600" Width="900"
+        ResizeMode="NoResize">
     
     <Window.Resources>
         <Style TargetType="TextBlock">

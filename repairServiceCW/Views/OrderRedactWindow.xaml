@@ -3,14 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:repairServiceCW.Views"
+        xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:RedactOrderVM}"
         mc:Ignorable="d"
-        Title="Изменение заказа" Height="600" Width="900">
+        Title="Изменение заказа" Height="600" Width="900"
+        ResizeMode="NoResize">
+    
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
         </Style>
         <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="300"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ComboBox">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="MinHeight" Value="30"/>
             <Setter Property="MinWidth" Value="300"/>
@@ -27,51 +35,50 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBlock Text="Заказ {order_name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+            <TextBlock Text="{Binding Order.OrderCode, StringFormat='Заказ {0}'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
         </Grid>
 
         <Grid Grid.Row="1">
             <Grid Margin="100,5,100,5">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Тип устройства" Margin="5"/>
-                        <TextBox Margin="5" Text="[order_device]"/>
+                        <TextBox Margin="5" Text="{Binding Order.OrderDevice}"/>
                     </StackPanel>
 
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Модель устройства(опционально)" Margin="5"/>
-                        <TextBox Margin="5" Text="[order_model]"/>
+                        <TextBox Margin="5" Text="{Binding Order.OrderDeviceModel}"/>
                     </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="1">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Статус заказа" Margin="5"/>
-                        <!-- Поменять на ListBox с выбором из всех статусов -->
-                        <TextBox Margin="5" Text="[order_status]"/>
+                        <ComboBox Margin="5" ItemsSource="{Binding StatusList}" DisplayMemberPath="StatusName" SelectedValue="{Binding SelectedStatus}"/>
                     </StackPanel>
 
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Дата получения заказа" Margin="5"/>
-                        <DatePicker Margin="5" />
+                        <DatePicker Margin="5" SelectedDate="{Binding Order.OrderTakeDate}"/>
                     </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="2">
                     <DockPanel Margin="5" LastChildFill="True">
                         <TextBlock Text="Описание проблемы(максимум 1000 символов)" Margin="5,0,5,0" DockPanel.Dock="Top"/>
-                        <TextBox Margin="5" DockPanel.Dock="Left" Text="[order_description]" VerticalContentAlignment="Top"/>
+                        <TextBox Margin="5" DockPanel.Dock="Left" VerticalContentAlignment="Top" Text="{Binding Order.OrderDescription}"/>
                     </DockPanel>
                 </Grid>
 
@@ -80,8 +87,8 @@
 
         <Grid Grid.Row="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
-                <Button Content="Применить" Margin="5,0,20,0" MinHeight="24" MinWidth="200" FontSize="18"/>
-                <Button Content="Отмена" Margin="5,0,20,0"  MinHeight="24" MinWidth="200" FontSize="18"/>
+                <Button Content="Изменить" Margin="5,0,20,0" MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding RedactOrderCommand}" CommandParameter="{Binding Order}"/>
+                <Button Content="Отмена" Margin="5,0,20,0"  MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding CancelCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>

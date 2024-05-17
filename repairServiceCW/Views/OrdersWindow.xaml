@@ -84,12 +84,9 @@
                             <!-- Кнопки -->
                             <Grid Grid.Column="3">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">
-                                    <Button Content="Просмотр"/>
-                                    <!--Click="ViewButton_Click"-->
-                                    <Button Content="Изменить" />
-                                    <!--Click="EditButton_Click"-->
-                                    <Button Content="Удалить" />
-                                    <!--Click="DeleteButton_Click"-->
+                                    <Button Content="Просмотр" Command="{Binding DataContext.OrderElementsWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}"/>
+                                    <Button Content="Изменить" Command="{Binding DataContext.RedactOrderWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}"/>
+                                    <Button Content="Удалить" Command="{Binding DataContext.DeleteOrderWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}"/>
                                 </StackPanel>
                             </Grid>
 

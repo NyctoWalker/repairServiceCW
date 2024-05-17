@@ -54,11 +54,7 @@ namespace repairServiceCW.ViewModels
 
         #region Commands
 
-        private Command redactOrderWindowCommand;
-        private Command deleteOrderWindowCommand;
-        private Command orderElementsWindowCommand;
-
-        // Cancel add, redact, delete for Orders and Elements, close Elements
+        // Close Elements
         // For Orders and Elements add, redact, delete
         // Make word document
 
@@ -83,6 +79,7 @@ namespace repairServiceCW.ViewModels
             FillOrdersList();
         }
 
+        #region Commands
 
         private Command addOrderWindowCommand;
         public Command AddOrderWindowCommand
@@ -94,9 +91,52 @@ namespace repairServiceCW.ViewModels
             });
         }
 
+        private Command deleteOrderWindowCommand;
+        public Command DeleteOrderWindowCommand
+        {
+            get => deleteOrderWindowCommand ??= new Command(obj =>
+            {
+                Order order = obj as Order;
+                if (order != null)
+                {
+                    var deleteWindow = new OrderDeleteWindow(singleton, order);
+                    deleteWindow.ShowDialog();
+                }
+            });
+        }
+
+        private Command redactOrderWindowCommand;
+        public Command RedactOrderWindowCommand
+        {
+            get => redactOrderWindowCommand ??= new Command(obj =>
+            {
+                Order order = obj as Order;
+                if (order != null)
+                {
+                    var redactWindow = new OrderRedactWindow(singleton, order);
+                    redactWindow.ShowDialog();
+                }
+            });
+        }
+
+        private Command orderElementsWindowCommand;
+        public Command OrderElementsWindowCommand
+        {
+            get => orderElementsWindowCommand ??= new Command(obj =>
+            {
+                Order order = obj as Order;
+                if (order != null)
+                    System.Windows.MessageBox.Show($"Elements: {order.OrderCode} \n{order.OrderElements.Count()} элементов");
+            });
+        }
+
+        #endregion
+
 
         public void FillOrdersList()
         {
+            OrdersList.Clear();
+
             var _orders = dbManipulator.GetOrdersList();
             if (_orders.Count() > 0)
             {

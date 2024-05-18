@@ -64,9 +64,7 @@ namespace repairServiceCW.ViewModels
 
             StatusList = new();
             foreach (OrderStatus os in vm.dbManipulator.GetStatusList())
-            {
                 StatusList.Add(os);
-            }
             SelectedStatus = StatusList[0];
         }
 

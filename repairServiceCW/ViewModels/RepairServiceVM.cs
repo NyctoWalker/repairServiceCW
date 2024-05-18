@@ -15,37 +15,7 @@ namespace repairServiceCW.ViewModels
     {
         #region Properties
 
-        private Order selectedOrder;
-        public Order SelectedOrder
-        {
-            get { return selectedOrder; }
-            set
-            {
-                if (selectedOrder != value)
-                {
-                    selectedOrder = value;
-                    OnPropertyChanged(nameof(SelectedOrder));
-                }
-            }
-        }
-
         public ObservableCollection<Order> OrdersList { get; set; }
-
-        private OrderElement selectedElement;
-        public OrderElement SelectedElement
-        {
-            get { return selectedElement; }
-            set
-            {
-                if (selectedElement != value)
-                {
-                    selectedElement = value;
-                    OnPropertyChanged(nameof(SelectedElement));
-                }
-            }
-        }
-
-        public ObservableCollection<OrderElement> ElementsList { get; set; }
 
         public RepairServiceVM singleton;
         public DBManipulator dbManipulator;
@@ -54,17 +24,7 @@ namespace repairServiceCW.ViewModels
 
         #region Commands
 
-        // Close Elements
-        // For Orders and Elements add, redact, delete
-        // Make word document
-
-        /*
-        private Command addElementWindowCommand;
-        private Command redactElementWindowCommand;
-        private Command deleteElementWindowCommand;
-
-
-        */
+        // For Elements list
 
         #endregion
 
@@ -74,7 +34,6 @@ namespace repairServiceCW.ViewModels
             dbManipulator = new();
             
             OrdersList = new();
-            ElementsList = new();
 
             FillOrdersList();
         }
@@ -126,7 +85,10 @@ namespace repairServiceCW.ViewModels
             {
                 Order order = obj as Order;
                 if (order != null)
-                    System.Windows.MessageBox.Show($"Elements: {order.OrderCode} \n{order.OrderElements.Count()} элементов");
+                {
+                    var elementsWindow = new ElementsWindow(singleton, order);
+                    elementsWindow.ShowDialog();
+                }
             });
         }
 
@@ -144,8 +106,6 @@ namespace repairServiceCW.ViewModels
                 {
                     OrdersList.Add(o);
                 }
-
-                SelectedOrder = (SelectedOrder == null) ? OrdersList[0] : SelectedOrder;
             }
         }
 

@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:repairServiceCW.Views"
+        xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:OrderElementsVM}"
         mc:Ignorable="d"
-        Title="Список элементов" Height="900" Width="1200">
+        Title="Список элементов" Height="800" Width="1200">
 
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -28,45 +28,74 @@
 
         <Grid Grid.Row="0">
             <StackPanel VerticalAlignment="Top">
-                <TextBlock Text="Заказ {order_name}, {order_device}, {order_model}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                <TextBlock FontSize="24" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Заказ {0}, {1}, {2}">
+                            <Binding Path="SelectedOrder.OrderCode" />
+                            <Binding Path="SelectedOrder.OrderDevice" />
+                            <Binding Path="SelectedOrder.OrderDeviceModel" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                
                 <DockPanel Margin="5" VerticalAlignment="Top">
-                    <TextBlock Text="Дата получения: {order_date}" HorizontalAlignment="Left"/>
-                    <TextBlock Text="Статус: {order_status}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding SelectedOrder.OrderTakeDate, StringFormat='Дата получения: {0:dd.MM.yyyy}'}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="{Binding SelectedOrder.CodeStatusNavigation.StatusName, StringFormat='Статус: {0}'}" HorizontalAlignment="Right"/>
                 </DockPanel>
-                <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" Text="Описание проблемы: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. N" Margin="5"/>
+                <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding SelectedOrder.OrderDescription, StringFormat='Описание: {0}'}" Margin="5"/>
                 <TextBlock Text="Свернуть..." Margin="5,0,5,0"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
                     <TextBlock Text="Элементы заказа" Margin="5" VerticalAlignment="Center" FontSize="24"/>
-                    <Button Content="+" Margin="5" MinHeight="28" MinWidth="28" FontSize="18"/>
+                    <Button Content="+" Command="{Binding AddElementWindowCommand}" Margin="5" MinHeight="28" MinWidth="28" FontSize="18"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
-            <ListBox>
+            <ListBox Margin="10" ItemsSource="{Binding ElementsList}" HorizontalAlignment="Stretch">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="2"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <!-- Лево: N. element_name -->
-                            <TextBlock Text="{Binding ElementName}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"/>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Лево: element_name -->
+                            <Grid Grid.Column="0">
+                                <TextBlock Text="{Binding ElementName}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" FontSize="24"/>
+                            </Grid>
 
                             <!-- Середина: element_date и element_price -->
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding ElementDate}" Margin="10"/>
-                                <TextBlock Text="{Binding ElementPrice}" Margin="10"/>
-                            </StackPanel>
+                            <Grid Grid.Column="1">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding ElementEndDate, StringFormat='от: {0: dd.MM.yyyy}'}" Margin="10" FontSize="18"/>
+                                    <TextBlock Text="{Binding ElementPrice}" Margin="10" FontSize="18"/>
+                                </StackPanel>
+                            </Grid>
 
                             <!-- Правая часть: element_type -->
-                            <TextBlock Text="{Binding ElementType}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10"/>
-                            
+                            <Grid Grid.Column="2">
+                                <TextBlock Text="{Binding CodeElementNavigation.ElementType1}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10" FontSize="24"/>
+                            </Grid>
+
                             <!-- Кнопки -->
-                            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">
-                                <Button Content="Изменить"/>
-                                <!--  Click="EditButton_Click" -->
-                                <Button Content="Удалить" />
-                                <!-- Click="DeleteButton_Click" -->
-                            </StackPanel>
+                            <Grid Grid.Column="3">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">
+                                    <Button Content="Изменить" Command="{Binding DataContext.RedactElementWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}"/>
+                                    <Button Content="Удалить" Command="{Binding DataContext.DeleteElementWindowCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}"/>
+                                </StackPanel>
+                            </Grid>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -76,9 +105,8 @@
         <Grid Grid.Row="2">
             <DockPanel VerticalAlignment="Bottom"  Margin="100,0,100,0">
                 <Button Content="Сгенерировать акт работ" Margin="10" HorizontalAlignment="Left"/>
-                <Button Content="Вернуться к списку заказов" Margin="10" HorizontalAlignment="Right"/>
+                <Button Content="Вернуться к списку заказов" Margin="10" HorizontalAlignment="Right" Command="{Binding CancelCommand}"/>
             </DockPanel>
         </Grid>
     </Grid>
-    
 </Window>

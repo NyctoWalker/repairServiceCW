@@ -1,4 +1,5 @@
-﻿using System;
+﻿using repairServiceCW.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,12 @@ namespace repairServiceCW.Views
     /// </summary>
     public partial class ElementAddWindow : Window
     {
-        public ElementAddWindow()
+        public ElementAddWindow(OrderElementsVM vm)
         {
             InitializeComponent();
+            AddElementVM VM = new AddElementVM(vm);
+            DataContext = VM;
+            VM.RequestClose += () => this.Close();
         }
     }
 }

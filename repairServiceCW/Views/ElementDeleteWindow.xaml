@@ -3,11 +3,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:repairServiceCW.Views"
+        xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:RedactElementVM}"
         mc:Ignorable="d"
-        Title="ElementDeleteWindow" Height="250" Width="600"
+        Title="Удаление элемента" Height="250" Width="600"
         ResizeMode="NoResize">
+    <Window.Resources>
+        <local:NullToModelConverter x:Key="NullToModelConverter" />
+    </Window.Resources>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Image Source="/Resources/exclamation.png"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <StackPanel>
+                        <TextBlock FontSize="18" TextWrapping="Wrap" Text="Вы действительно хотите удалить элемент?"/>
+                        <TextBlock Text=""/>
+
+                        <TextBlock FontSize="18" TextWrapping="Wrap">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} от {1}, {2}, {3}р.">
+                                    <Binding Path="Element.CodeElementNavigation.ElementType1" />
+                                    <Binding Path="FormatDate"/>
+                                    <Binding Path="Element.ElementName"/>
+                                    <Binding Path="Element.ElementPrice"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <TextBlock FontSize="18" TextWrapping="Wrap" Text="Элемент будет удалён без возможности восстановления."/>
+                        
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+                <Button Content="Удалить" Margin="5,0,20,0" MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding DeleteElementCommand}" CommandParameter="{Binding Element}"/>
+                <Button Content="Отмена" Margin="5,0,20,0"  MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Window>

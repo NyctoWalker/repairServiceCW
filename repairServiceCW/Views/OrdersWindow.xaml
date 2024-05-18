@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:RepairServiceVM}"
         mc:Ignorable="d"
-        Title="Список заказов" Height="900" Width="1200">
+        Title="Список заказов" Height="800" Width="1200">
 
     <Window.Resources>
         <local:NullToModelConverter x:Key="NullToModelConverter" />
@@ -44,7 +44,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <ListBox Margin="10" ItemsSource="{Binding OrdersList}" SelectedItem="{Binding SelectedOrder}" HorizontalContentAlignment="Stretch">
+            <ListBox Margin="10" ItemsSource="{Binding OrdersList}" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Padding" Value="0"/>

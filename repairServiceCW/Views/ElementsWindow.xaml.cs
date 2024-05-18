@@ -1,4 +1,6 @@
-﻿using System;
+﻿using repairServiceCW.Models;
+using repairServiceCW.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,12 @@ namespace repairServiceCW.Views
     /// </summary>
     public partial class ElementsWindow : Window
     {
-        public ElementsWindow()
+        public ElementsWindow(RepairServiceVM vm, Order order)
         {
             InitializeComponent();
+            OrderElementsVM VM = new OrderElementsVM(vm, order);
+            DataContext = VM;
+            VM.RequestClose += () => this.Close();
         }
 
         private void TextBlock_Click(object sender, RoutedEventArgs e)

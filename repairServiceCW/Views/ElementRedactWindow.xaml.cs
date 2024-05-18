@@ -21,9 +21,12 @@ namespace repairServiceCW.Views
     /// </summary>
     public partial class ElementRedactWindow : Window
     {
-        public ElementRedactWindow()
+        public ElementRedactWindow(OrderElementsVM vm, OrderElement oe)
         {
             InitializeComponent();
+            RedactElementVM VM = new RedactElementVM(vm, oe);
+            DataContext = VM;
+            VM.RequestClose += () => this.Close();
         }
     }
 }

@@ -78,7 +78,7 @@
                 <Grid Grid.Row="2">
                     <DockPanel Margin="5" LastChildFill="True">
                         <TextBlock Text="Описание проблемы(максимум 1000 символов)" Margin="5,0,5,0" DockPanel.Dock="Top"/>
-                        <TextBox Margin="5" DockPanel.Dock="Left" VerticalContentAlignment="Top" Text="{Binding Order.OrderDescription}"/>
+                        <TextBox Margin="5" TextWrapping="Wrap" DockPanel.Dock="Left" VerticalContentAlignment="Top" Text="{Binding Order.OrderDescription}"/>
                     </DockPanel>
                 </Grid>
 

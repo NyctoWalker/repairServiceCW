@@ -15,7 +15,7 @@ namespace repairServiceCW.Models
             List<Order> output = new();
             using (repair_serviceContext db = new())
             {
-                var orders = db.Orders.Include(o => o.OrderElements).Include(o => o.CodeStatusNavigation);
+                var orders = db.Orders.Include(o => o.OrderElements).ThenInclude(oe => oe.CodeElementNavigation).Include(o => o.CodeStatusNavigation);
                 foreach (Order o in orders)
                 {
                     output.Add(o);
@@ -92,7 +92,7 @@ namespace repairServiceCW.Models
                 if (existingOrder == null)
                     return output;
                 
-                var elements = db.OrderElements.Where(x => x.IdOrder == existingOrder.OrderId);
+                var elements = db.OrderElements.Where(x => x.IdOrder == existingOrder.OrderId).Include(oe => oe.CodeElementNavigation);
                 foreach (OrderElement e in elements)
                 {
                     output.Add(e);

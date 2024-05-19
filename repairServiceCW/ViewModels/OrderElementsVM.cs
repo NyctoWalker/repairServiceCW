@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace repairServiceCW.ViewModels
 {
@@ -32,19 +33,87 @@ namespace repairServiceCW.ViewModels
         public RepairServiceVM orderSingleton;
         public OrderElementsVM singleton;
 
-        // For Elements add, redact, delete
+        public ReportGenerator ReportGenerator;
+
+        #region UI
+        private bool descriptionHidden;
+        public bool DescriptionHidden
+        {
+            get { return descriptionHidden; }
+            set
+            {
+                if (descriptionHidden != value)
+                {
+                    descriptionHidden = value;
+                    OnPropertyChanged(nameof(DescriptionHidden));
+                    OnPropertyChanged(nameof(HyperlinkText));
+                    OnPropertyChanged(nameof(OrderDescription));
+                }
+            }
+        }
+        public string HyperlinkText
+        {
+            get { return descriptionHidden == true ? "Развернуть..." : "Свернуть..."; }
+        }
+
+        public string OrderDescription
+        {
+            get 
+            {
+                if (SelectedOrder.OrderDescription != null)
+                    return descriptionHidden == true ? "Описание скрыто." : SelectedOrder.OrderDescription.Length > 0 ? SelectedOrder.OrderDescription : "Описание не предоставлено.";
+                else
+                    return "Описание не предоставлено";
+            }
+        }
+
+        public Visibility IsDescriptionBig
+        { 
+            get 
+            { return SelectedOrder.OrderDescription == null ? Visibility.Hidden : SelectedOrder.OrderDescription.Length >= 100 ? Visibility.Visible : Visibility.Hidden; }
+        }
+        #endregion
         // Make word document
 
         public OrderElementsVM(RepairServiceVM OrderSingleton, Order order)
         {
             singleton = this;
             orderSingleton = OrderSingleton;
+            ReportGenerator = new();
 
             SelectedOrder = order;
             ElementsList = new();
             FillElementsList();
+
+            DescriptionHidden = false;
         }
 
+
+        private Command changeDescriptionVisibilityCommand;
+        public Command ChangeDescriptionVisibilityCommand
+        {
+            get => changeDescriptionVisibilityCommand ??= new Command(obj =>
+            {
+                DescriptionHidden = !DescriptionHidden;
+            });
+        }
+
+        private Command createDocumentCommand;
+        public Command CreateDocumentCommand
+        {
+            get => createDocumentCommand ??= new Command(obj =>
+            {
+                // DocumentGenerator.Generate(SelectedOrder);
+                // MessageBox.Show("Документ был сгенерирован. Пожалуйста, проверьте его на корректность перед печатью.");
+                if (ElementsList.Count() > 0)
+                {
+                    ReportGenerator.WordGenerateReport(ElementsList.ToList());
+                    MessageBox.Show("Отчёт сгенерирован в папке с программой.");
+                }
+                else
+                    MessageBox.Show("Отсутствуют элементы заказа для генерации акта выполненных работ.");
+            });
+        }
 
         private Command addElementWindowCommand;
         public Command AddElementWindowCommand

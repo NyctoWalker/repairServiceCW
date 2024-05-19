@@ -105,7 +105,8 @@ namespace repairServiceCW.Models
         {
             using (repair_serviceContext db = new())
             {
-                db.Remove(e);
+                var elementToDelete = db.OrderElements.FirstOrDefault(x => x.ElementId == e.ElementId);
+                db.Remove(elementToDelete);
                 db.SaveChanges();
             }
         }

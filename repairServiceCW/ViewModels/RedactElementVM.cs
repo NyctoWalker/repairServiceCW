@@ -41,8 +41,25 @@ namespace repairServiceCW.ViewModels
                 {
                     selectedType = value;
                     if (selectedType != null)
+                    {
                         Element.CodeElement = selectedType.ElementCode;
+                        HasQuantity = SelectedType.ElementType1 == "Работа" ? false : true;
+                    }
                     OnPropertyChanged(nameof(SelectedType));
+                }
+            }
+        }
+
+        private bool hasQuantity;
+        public bool HasQuantity
+        {
+            get { return hasQuantity; }
+            set
+            {
+                if (hasQuantity != value)
+                {
+                    hasQuantity = value;
+                    OnPropertyChanged(nameof(HasQuantity));
                 }
             }
         }
@@ -105,6 +122,8 @@ namespace repairServiceCW.ViewModels
 
                 if (element != null)
                 {
+                    if (!HasQuantity)
+                        Element.ElementQuantity = null;
                     singleton.orderSingleton.dbManipulator.RedactElementRecord(element);
                     singleton.FillElementsList();
                 }

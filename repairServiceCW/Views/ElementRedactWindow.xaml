@@ -3,14 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:repairServiceCW.Views"
+        xmlns:local="clr-namespace:repairServiceCW.ViewModels" d:DataContext="{d:DesignInstance Type=local:RedactElementVM}"
         mc:Ignorable="d"
         Title="Изменение элемента" Height="600" Width="900"
         ResizeMode="NoResize">
-    
+
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="300"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="14"/>
@@ -44,26 +50,25 @@
                 <Grid Grid.Row="0">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Название элемента" Margin="5"/>
-                        <TextBox Margin="5" Text="[element_name]"/>
+                        <TextBox Margin="5" Text="{Binding Element.ElementName}"/>
                     </StackPanel>
 
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Заявленная стоимость элемента(руб.)" Margin="5"/>
                         <!-- Написать валидатор чисел -->
-                        <TextBox Margin="5" Text="[element_price]"/>
+                        <TextBox Margin="5" Text="{Binding Element.ElementPrice}"/>
                     </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="1">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Тип элемента" Margin="5"/>
-                        <!-- Поменять на ListBox с выбором из всех статусов -->
-                        <TextBox Margin="5" Text="[element_type]"/>
+                        <ComboBox ItemsSource="{Binding TypesList}" DisplayMemberPath="ElementType1" SelectedValue="{Binding SelectedType}"/>
                     </StackPanel>
 
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
                         <TextBlock Text="Дата выполнения/использования" Margin="5"/>
-                        <DatePicker Margin="5" />
+                        <DatePicker Margin="5" SelectedDate="{Binding Element.ElementEndDate}"/>
                     </StackPanel>
                 </Grid>
 
@@ -71,17 +76,16 @@
                     <StackPanel Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock Text="Количество (число материалов и компонентов)" Margin="5,0,5,0"/>
                         <!-- Написать валидатор и логику блока ввода -->
-                        <TextBox Margin="5" Text="[element_count]"/>
+                        <TextBox Margin="5" Text="{Binding Element.ElementQuantity}" IsEnabled="{Binding HasQuantity}"/>
                     </StackPanel>
                 </Grid>
-
             </Grid>
         </Grid>
 
         <Grid Grid.Row="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
-                <Button Content="Изменить" Margin="5,0,20,0" MinHeight="24" MinWidth="200" FontSize="18"/>
-                <Button Content="Отмена" Margin="5,0,20,0"  MinHeight="24" MinWidth="200" FontSize="18"/>
+                <Button Content="Изменить" Margin="5,0,20,0" MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding RedactElementCommand}" CommandParameter="{Binding Element}"/>
+                <Button Content="Отмена" Margin="5,0,20,0"  MinHeight="24" MinWidth="200" FontSize="18" Command="{Binding CancelCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>

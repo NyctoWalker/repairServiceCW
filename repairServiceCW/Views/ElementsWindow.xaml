@@ -10,11 +10,13 @@
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="MinHeight" Value="40"/>
-            <Setter Property="MinWidth" Value="250"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="MinWidth" Value="30"/>
             <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="5"/>
         </Style>
     </Window.Resources>
 
@@ -28,7 +30,7 @@
 
         <Grid Grid.Row="0">
             <StackPanel VerticalAlignment="Top">
-                <TextBlock FontSize="24" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="Заказ {0}, {1}, {2}">
                             <Binding Path="SelectedOrder.OrderCode" />
@@ -42,8 +44,13 @@
                     <TextBlock Text="{Binding SelectedOrder.OrderTakeDate, StringFormat='Дата получения: {0:dd.MM.yyyy}'}" HorizontalAlignment="Left"/>
                     <TextBlock Text="{Binding SelectedOrder.CodeStatusNavigation.StatusName, StringFormat='Статус: {0}'}" HorizontalAlignment="Right"/>
                 </DockPanel>
-                <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding SelectedOrder.OrderDescription, StringFormat='Описание: {0}'}" Margin="5"/>
-                <TextBlock Text="Свернуть..." Margin="5,0,5,0"/>
+                <TextBlock VerticalAlignment="Top" Text="{Binding OrderDescription, StringFormat='Описание: {0}'}" Margin="5"/>
+
+                <TextBlock Margin="5,0,5,0" Visibility="{Binding IsDescriptionBig}">
+                    <Hyperlink Command="{Binding ChangeDescriptionVisibilityCommand}">
+                        <TextBlock Text="{Binding HyperlinkText}"/>
+                    </Hyperlink>
+                </TextBlock>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
                     <TextBlock Text="Элементы заказа" Margin="5" VerticalAlignment="Center" FontSize="24"/>
@@ -53,7 +60,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <ListBox Margin="10" ItemsSource="{Binding ElementsList}" HorizontalAlignment="Stretch">
+            <ListBox Margin="10" ItemsSource="{Binding ElementsList}" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Padding" Value="0"/>
@@ -80,7 +87,7 @@
                             <Grid Grid.Column="1">
                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding ElementEndDate, StringFormat='от: {0: dd.MM.yyyy}'}" Margin="10" FontSize="18"/>
-                                    <TextBlock Text="{Binding ElementPrice}" Margin="10" FontSize="18"/>
+                                    <TextBlock Text="{Binding ElementPrice, StringFormat='{}{0} руб.'}" Margin="10" FontSize="18"/>
                                 </StackPanel>
                             </Grid>
 
@@ -104,7 +111,7 @@
 
         <Grid Grid.Row="2">
             <DockPanel VerticalAlignment="Bottom"  Margin="100,0,100,0">
-                <Button Content="Сгенерировать акт работ" Margin="10" HorizontalAlignment="Left"/>
+                <Button Content="Сгенерировать акт работ" Margin="10" HorizontalAlignment="Left" Command="{Binding CreateDocumentCommand}"/>
                 <Button Content="Вернуться к списку заказов" Margin="10" HorizontalAlignment="Right" Command="{Binding CancelCommand}"/>
             </DockPanel>
         </Grid>
